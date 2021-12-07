@@ -57,3 +57,15 @@ func (u *userController) GetUsers(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, getUsersDTO)
 }
+
+func (u *userController) GetUser(ctx echo.Context) error {
+	ownId, err := ctx.Cookie("userid")
+	if err != nil {
+		ctx.Error(err)
+		return err
+	}
+	getUserDTO := models.GetUserDTO{
+		UUID: ownId.Value,
+	}
+	return ctx.JSON(http.StatusOK, getUserDTO)
+}
