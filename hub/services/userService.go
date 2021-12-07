@@ -7,7 +7,7 @@ import (
 )
 
 type UserService interface {
-	Register(echo.Context, models.RegisterUserDTO) error
+	Register(echo.Context) (*models.User, error)
 }
 
 type userService struct {
@@ -20,10 +20,14 @@ func NewUserService(repository UserRepository) UserService {
 	}
 }
 
-func (m *userService) Register(ctx echo.Context, registerUserDTO models.RegisterUserDTO) error {
-	user, err := models.NewUser(registerUserDTO.UUID)
+func (m *userService) Register(ctx echo.Context) (*models.User, error) {
+	user, err := models.NewUser()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return m.repository.Register(ctx, user)
+	err = m.repository.Register(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

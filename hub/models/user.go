@@ -6,13 +6,9 @@ type User struct {
 	UUID uuid.UUID
 }
 
-func NewUser(idString string) (*User, error) {
-	id, err := uuid.Parse(idString)
-	if err != nil {
-		return nil, err
-	}
+func NewUser() (*User, error) {
 	return &User{
-		UUID: id,
+		UUID: uuid.New(),
 	}, nil
 }
 

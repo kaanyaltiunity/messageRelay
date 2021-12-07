@@ -28,6 +28,13 @@ func (a *App) Start() {
 	messageRoutes := routes.NewMessageRoutes(messageController)
 	messageRoutes.BindControllers(a.router)
 
+	cache := infrastructure.NewCache()
+	userRepository := infrastructure.NewUserRepository(cache)
+	userService := services.NewUserService(userRepository)
+	userController := controllers.NewUserController(userService)
+	userRoutes := routes.NewUserRoutes(userController)
+	userRoutes.BindControllers(a.router)
+
 	if err := a.router.Start(":3000"); err != http.ErrServerClosed {
 		log.Fatal(err)
 	}

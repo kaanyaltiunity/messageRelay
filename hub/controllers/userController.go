@@ -3,6 +3,7 @@ package controllers
 import (
 	"messageHub/models"
 	"messageHub/services"
+	"net/http"
 
 	"github.com/labstack/echo"
 )
@@ -22,17 +23,13 @@ func NewUserController(service services.UserService) UserController {
 }
 
 func (u *userController) Register(ctx echo.Context) error {
-	registerUserDTO := models.RegisterUserDTO{}
-	err := ctx.Bind(&registerUserDTO)
+	user, err := u.service.Register(ctx)
 	if err != nil {
 		ctx.Error(err)
 		return err
 	}
-
-	err = u.service.Register(ctx, registerUserDTO)
-	if err != nil {
-		ctx.Error(err)
-		return err
+	registerUserDTO := models.RegisterUserDTO{
+		UUID: user.UUID.String(),
 	}
-	return ctx.String(200, "user registered")
+	return ctx.JSON(http.StatusOK, registerUserDTO)
 }
