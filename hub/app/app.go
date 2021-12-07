@@ -28,7 +28,7 @@ func (a *App) Start() {
 	messageRoutes := routes.NewMessageRoutes(messageController)
 	messageRoutes.BindControllers(a.router)
 
-	if err := a.router.Start(":8080"); err != http.ErrServerClosed {
+	if err := a.router.Start(":3000"); err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }
