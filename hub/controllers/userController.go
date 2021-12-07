@@ -40,14 +40,13 @@ func (u *userController) Register(ctx echo.Context) error {
 }
 
 func (u *userController) GetUsers(ctx echo.Context) error {
-	// ownId, err := ctx.Cookie("userid")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	ctx.Error(err)
-	// 	return err
-	// }
-	ownId := "test"
-	users, err := u.service.GetUsers(ctx, ownId)
+	ownId, err := ctx.Cookie("userid")
+	if err != nil {
+		ctx.Error(err)
+		return err
+	}
+
+	users, err := u.service.GetUsers(ctx, ownId.Value)
 	if err != nil {
 		ctx.Error(err)
 		return err
