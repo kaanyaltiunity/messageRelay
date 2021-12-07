@@ -6,10 +6,13 @@ import (
 )
 
 type MessageRepository struct {
+	publisher Publisher
 }
 
-func NewMessageRepository() *MessageRepository {
-	return &MessageRepository{}
+func NewMessageRepository(publisher Publisher) *MessageRepository {
+	return &MessageRepository{
+		publisher: publisher,
+	}
 }
 
 func (m *MessageRepository) RelayMessage(message *models.Message) error {

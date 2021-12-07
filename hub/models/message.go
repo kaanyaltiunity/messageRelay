@@ -9,14 +9,24 @@ type Message struct {
 }
 
 type RelayMessageDTO struct {
-	Receivers []uuid.UUID `json:"receivers"`
-	Text      string      `json:"text"`
+	Receivers []string `json:"receivers"`
+	Text      string   `json:"text"`
 }
 
-func NewMessage(receivers []uuid.UUID, text string) (*Message, error) {
+func NewMessage(receivers []string, text string) (*Message, error) {
+	var uuids []uuid.UUID
+
+	for _, v := range receivers {
+		uuid, err := uuid.Parse(v)
+		if err != nil {
+			return nil, err
+		}
+		uuids = append(uuids, uuid)
+	}
+
 	return &Message{
 		UUID:      uuid.New(),
-		Receivers: receivers,
+		Receivers: uuids,
 		Text:      text,
 	}, nil
 }

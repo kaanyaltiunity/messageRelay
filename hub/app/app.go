@@ -21,7 +21,8 @@ func NewApp() *App {
 }
 
 func (a *App) Start() {
-	messageRepository := infrastructure.NewMessageRepository()
+	messagePublisher := infrastructure.NewPublisher()
+	messageRepository := infrastructure.NewMessageRepository(messagePublisher)
 	messageService := services.NewMessageService(messageRepository)
 	messageController := controllers.NewMessageController(messageService)
 	messageRoutes := routes.NewMessageRoutes(messageController)
