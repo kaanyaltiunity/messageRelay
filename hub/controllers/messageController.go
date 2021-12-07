@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"messageHub/models"
 	"messageHub/services"
 
@@ -25,13 +24,14 @@ func NewMessageController(service services.MessageService) MessageController {
 func (m *messageController) RelayMessage(ctx echo.Context) error {
 	messageDTO := models.RelayMessageDTO{}
 	err := ctx.Bind(&messageDTO)
-	fmt.Println("HERE")
 	if err != nil {
-		panic(err)
+		ctx.Error(err)
+		return err
 	}
 	err = m.service.RelayMessage(ctx, messageDTO)
 	if err != nil {
 		ctx.Error(err)
+		return err
 	}
 	return ctx.String(200, "message sent")
 }
