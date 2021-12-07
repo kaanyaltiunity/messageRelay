@@ -1,13 +1,12 @@
 package infrastructure
 
 import (
-	"fmt"
-
 	"github.com/go-redis/redis/v8"
+	"github.com/labstack/echo"
 )
 
 type Publisher interface {
-	Publish([]string, string) error
+	Publish(echo.Context, string, string) error
 }
 
 type redisClient struct {
@@ -23,10 +22,10 @@ func NewPublisher() Publisher {
 	}
 }
 
-func (r *redisClient) Publish(topics []string, message string) error {
-	topics = []string{"test"} // hard coded for now
-	for v, _ := range topics {
-		fmt.Println(v)
+func (r *redisClient) Publish(ctx echo.Context, topic string, message string) error {
+	err := r.client.Publish(ctx.Request().Context(), topic, message).Err()
+	if err != nil {
+		return err
 	}
 	return nil
 }

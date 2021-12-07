@@ -29,7 +29,7 @@ func (m *messageController) RelayMessage(ctx echo.Context) error {
 	if err != nil {
 		panic(err)
 	}
-	err = m.service.RelayMessage(messageDTO)
+	err = m.service.RelayMessage(ctx, messageDTO)
 	if err != nil {
 		ctx.Error(err)
 	}

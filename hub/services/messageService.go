@@ -1,9 +1,13 @@
 package services
 
-import "messageHub/models"
+import (
+	"messageHub/models"
+
+	"github.com/labstack/echo"
+)
 
 type MessageService interface {
-	RelayMessage(models.RelayMessageDTO) error
+	RelayMessage(echo.Context, models.RelayMessageDTO) error
 }
 
 type messageService struct {
@@ -16,10 +20,10 @@ func NewMessageService(repository MessageRepository) MessageService {
 	}
 }
 
-func (m *messageService) RelayMessage(messageDTO models.RelayMessageDTO) error {
+func (m *messageService) RelayMessage(ctx echo.Context, messageDTO models.RelayMessageDTO) error {
 	message, err := models.NewMessage(messageDTO.Receivers, messageDTO.Text)
 	if err != nil {
 		return err
 	}
-	return m.repository.RelayMessage(message)
+	return m.repository.RelayMessage(ctx, message)
 }

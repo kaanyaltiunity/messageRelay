@@ -1,7 +1,11 @@
 package services
 
-import "messageHub/models"
+import (
+	"messageHub/models"
+
+	"github.com/labstack/echo"
+)
 
 type MessageRepository interface {
-	RelayMessage(*models.Message) error
+	RelayMessage(echo.Context, *models.Message) error
 }
