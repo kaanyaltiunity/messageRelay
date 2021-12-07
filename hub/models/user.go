@@ -12,6 +12,20 @@ func NewUser() (*User, error) {
 	}, nil
 }
 
+func UserFromId(idString string) (*User, error) {
+	id, err := uuid.Parse(idString)
+	if err != nil {
+		return nil, err
+	}
+	return &User{
+		UUID: id,
+	}, nil
+}
+
 type RegisterUserDTO struct {
+	UUID string `json:"uuid"`
+}
+
+type GetUserDTO struct {
 	UUID string `json:"uuid"`
 }

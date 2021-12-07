@@ -15,6 +15,7 @@ func NewUserRoutes(controller controllers.UserController) *UserRoutes {
 	}
 }
 
-func (m *UserRoutes) BindControllers(router router.Router) {
-	router.POST("/register", m.controller.Register)
+func (u *UserRoutes) BindControllers(router router.Router) {
+	router.POST("/register", u.controller.Register)
+	router.GET("/users", u.controller.GetUsers)
 }
